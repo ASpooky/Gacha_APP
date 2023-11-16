@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/go-sql-driver/mysql v1.7.1
+	github.com/google/uuid v1.4.0
 	github.com/labstack/echo/v4 v4.11.2
 	gorm.io/driver/mysql v1.5.2
 	gorm.io/gorm v1.25.5

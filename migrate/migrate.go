@@ -12,5 +12,4 @@ func main() {
 	defer fmt.Println("Successfully Migrated")
 	defer db.CloseDB(dbCon)
 	dbCon.AutoMigrate(&model.User{})
-	//AutoMigrateでTable名を指定する場合は??
 }

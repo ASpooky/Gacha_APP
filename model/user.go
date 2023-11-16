@@ -6,7 +6,7 @@ type User struct {
 	ID        uint      `gorm:"primary_key"`
 	Name      string    `json:"name"`
 	Token     string    `json:"token" gorm:"unique"`
-	CreatedAt time.Time `json:"created_at`
+	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
@@ -23,5 +23,5 @@ type UserGetResponse struct {
 }
 
 type UserUpdateRequest struct {
-	Token string `json:"token"`
+	Name string `json:"name"`
 }
