@@ -28,7 +28,7 @@ type UserCreateRequest struct {
 	Name string
 }
 
-//各関数の前に認証middlewareを追加してtokenで認証,idで検索できるようする.
+//+a:各関数の前に認証middlewareを追加してtokenで認証,idで検索できるようする.
 
 func (uh *UserHandler) CreateUser(c echo.Context) error {
 	var req model.UserCreateRequest
@@ -36,7 +36,7 @@ func (uh *UserHandler) CreateUser(c echo.Context) error {
 	//bodyから空のuserequest構造体に値をバインドする.
 	if err := c.Bind(&req); err != nil {
 		log.Println("err :", err.Error())
-		return c.String(http.StatusInternalServerError, "err: Could not bind user struct!")
+		return c.String(http.StatusInternalServerError, "err: Could not bind request struct!")
 	}
 
 	//uuidを使用する
@@ -79,7 +79,7 @@ func (uh *UserHandler) UpdateUser(c echo.Context) error {
 	//bodyから空のuserequest構造体に値をバインドする.
 	if err := c.Bind(&req); err != nil {
 		log.Println("err :", err.Error())
-		return c.String(http.StatusInternalServerError, "err: Could not bind user struct!")
+		return c.String(http.StatusInternalServerError, "err: Could not bind request struct!")
 	}
 
 	//reauest headerから値を取得.

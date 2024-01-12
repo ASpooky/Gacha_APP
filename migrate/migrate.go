@@ -12,4 +12,7 @@ func main() {
 	defer fmt.Println("Successfully Migrated")
 	defer db.CloseDB(dbCon)
 	dbCon.AutoMigrate(&model.User{})
+	dbCon.AutoMigrate(&model.Character{})
+	dbCon.AutoMigrate(&model.Possession{})
+	dbCon.AutoMigrate(&model.Emission{})
 }

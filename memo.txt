@@ -17,6 +17,12 @@ dockerのコンテナ内のデータベースを参照する時はdockerに入�
 (1)docker exec -it db /bin/sh
 (2)mysql -uuser -ppassword
 
+mysqlの操作
+(1)show databases
+(2)use catech_db
+(3)show tables
+(4)select * from characters
+
 migrateについて
 migrateはdockerでinitを指定してやるとコンテナ起動時に実行されるため便利
 
