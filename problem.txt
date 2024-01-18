@@ -22,4 +22,4 @@ characterテーブルの初期化に手間取る→解決
 (〇)バルクインサート:一気にインサートする.
 (〇)quantityはなくしたほうがいいかも→sqlアンチデザイン
 (▲)sqlinit:sqlの初期化.
-()golangci-lint
+(〇)golangci-lint
