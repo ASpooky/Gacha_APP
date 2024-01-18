@@ -1,13 +1,13 @@
 package handler
 
 import (
-	"errors"
 	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
 
 	"github.com/ASpooky/ca_tech_dojo/model"
+	"github.com/ASpooky/ca_tech_dojo/types"
 	"github.com/ASpooky/ca_tech_dojo/utils"
 
 	"github.com/labstack/echo/v4"
@@ -60,56 +60,38 @@ func (gh *GatchaHandler) PlayGatcha(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "err: Could not find user")
 	}
 
+	var possessions []model.Possession
+	emissions := c.Get("emissions").(types.EmissionsByRarity)
+
 	for i := 0; i < req.Times; i++ {
 		//1~100のrandomな整数→レアリティ
 		randInt := rand.Intn(MAX-MIN) + MIN
 		rarity := utils.NumToRarity(randInt)
 		//log.Println(rarity)
 
-		var emissions []model.Emission
-
 		//レアリティからキャラクターID
-		if err := gh.db.Where("rarity=?", rarity).Find(&emissions).Error; err != nil {
-			log.Println("err :", err)
-			return c.String(http.StatusInternalServerError, "err: Could not find emission")
-		}
 
-		lenEmissions := len(emissions)
+		lenEmissions := len(emissions[rarity])
 		randEmission := rand.Intn(lenEmissions)
 
 		var character model.Character
 
 		//キャラクターIDからキャラクター
-		if err := gh.db.Where("id=?", emissions[randEmission].CaracterID).First(&character).Error; err != nil {
+		if err := gh.db.Where("id=?", emissions[rarity][randEmission]).First(&character).Error; err != nil {
 			log.Println("err :", err)
 			return c.String(http.StatusInternalServerError, "err: Could not find character")
 		}
 		//log.Println(character)
 
-		//userIDとcharacterIDからposessionから抽出
-		var possession model.Possession
-		if err := gh.db.Where("user_id=? and character_id=?", user.ID, character.ID).First(&possession).Error; err != nil {
-			//Possessionsの作成
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				log.Println("new create")
-				newPossession := model.Possession{
-					UserID:      user.ID,
-					CharacterID: character.ID,
-					Quantity:    1,
-				}
-				gh.db.Create(&newPossession)
-			} else {
-				log.Println("err :", err)
-				return c.String(http.StatusInternalServerError, "err: Could not find or create possessions")
-			}
-		} else {
-			//Possessionsの更新
-			newQuantity := possession.Quantity + 1
-			possession.Quantity = newQuantity
-			gh.db.Save(&possession)
-		}
+		possessions = append(possessions, model.Possession{UserID: user.ID, CharacterID: character.ID})
 
+		//userIDとcharacterIDからposessionから抽出
 		results = append(results, CharacterResponse{CharacterID: strconv.FormatUint(uint64(character.ID), 10), Name: character.Name})
+	}
+
+	if err := gh.db.Create(&possessions).Error; err != nil {
+		log.Println("err:", err)
+		return c.String(http.StatusInternalServerError, "err: Could not record possessions")
 	}
 
 	return c.JSON(http.StatusOK, GatchaPlayResponse{Results: results})

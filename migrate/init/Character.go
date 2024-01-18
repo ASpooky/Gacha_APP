@@ -59,5 +59,5 @@ func main() {
 	}
 
 	fmt.Println("Success characters table intialized!")
-	return
+
 }

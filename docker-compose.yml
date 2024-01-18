@@ -31,6 +31,7 @@ services:
       - type: volume
         source: mysql_data
         target: /var/lib/mysql
+      #- ./initdb:/docker-entrypoint-initdb
     networks:
       - default
 

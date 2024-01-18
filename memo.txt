@@ -15,11 +15,11 @@ mysqlについて.
 
 dockerのコンテナ内のデータベースを参照する時はdockerに入ってmysqlに入ってテーブルを参照しなければならない.
 (1)docker exec -it db /bin/sh
-(2)mysql -uuser -ppassword
+(2)mysql -u user -p password
 
 mysqlの操作
 (1)show databases
-(2)use catech_db
+(2)use catech_db 理解はした.
 (3)show tables
 (4)select * from characters
 

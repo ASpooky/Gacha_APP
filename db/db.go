@@ -10,12 +10,13 @@ import (
 
 func NewDB() *gorm.DB {
 	//parseTime=trueをつけることでtime.Time型をsqlでエラーなく読み込める.
-	dsn := fmt.Sprintf("user:password@tcp(127.0.0.1:3306)/catech_db?parseTime=true")
+	dsn := "user:password@tcp(127.0.0.1:3306)/catech_db?parseTime=true"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalln(dsn + ";database can't connect")
 	}
 	fmt.Println("Connected!!")
+
 	return db
 }
 

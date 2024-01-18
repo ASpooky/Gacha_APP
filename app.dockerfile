@@ -5,4 +5,6 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
-#CMD ["go", "run", "main.go"]
+RUN go install github.com/cosmtrek/air@latest
+
+#CMD ["air"]

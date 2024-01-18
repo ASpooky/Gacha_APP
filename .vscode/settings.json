@@ -1,3 +1,5 @@
 {
-  "sqltools.connections": []
+  "sqltools.connections": [],
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--config=${workspaceFolder}/.golangci.yaml", "--fast"]
 }
