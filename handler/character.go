@@ -80,5 +80,7 @@ func (ch *CharacterHandler) GetCharacterList(c echo.Context) error {
 
 	}
 
+	//c.Response().Header().Set("Content-Type", "application/json")
+
 	return c.JSON(http.StatusOK, GetCharacterListResponse{Characters: result})
 }

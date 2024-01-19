@@ -7,6 +7,7 @@ import (
 	"github.com/ASpooky/ca_tech_dojo/db"
 	"github.com/ASpooky/ca_tech_dojo/handler"
 	"github.com/ASpooky/ca_tech_dojo/model"
+	"github.com/ASpooky/ca_tech_dojo/myMiddleware"
 	"github.com/ASpooky/ca_tech_dojo/types"
 
 	"github.com/labstack/echo/v4"
@@ -14,15 +15,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 )
-
-func setEmmissionDataMiddleware(data types.EmissionsByRarity) echo.MiddlewareFunc {
-	return func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			c.Set("emissions", data)
-			return next(c)
-		}
-	}
-}
 
 func NewRouter() *echo.Echo {
 	db := db.NewDB()
@@ -60,7 +52,7 @@ func NewRouter() *echo.Echo {
 	u.PUT("/update", uh.UpdateUser)
 
 	g := e.Group("/gacha")
-	g.Use(setEmmissionDataMiddleware(emissionsByRarity))
+	g.Use(myMiddleware.SetEmmissionDataMiddleware(emissionsByRarity))
 	g.POST("/draw", gh.PlayGatcha)
 
 	c := e.Group("/character")
